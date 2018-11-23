@@ -1,26 +1,29 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { Icon } from 'expo';
 
-import TabBarIcon from '../components/TabBarIcon';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
+
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import LinksScreen from '../screens/ChargingScreen';
+import SettingsScreen from '../screens/ProfileScreen';
+import theme from '../constants/theme';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Nearby',
+  // eslint-disable-next-line
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+    <Icon.MaterialCommunityIcons
+      name="map-marker-multiple"
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? theme.primaryColor : theme.greyDarker}
     />
   ),
 };
@@ -30,11 +33,14 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Charging',
+  // eslint-disable-next-line
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    <Icon.Feather
+      name="battery-charging"
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? theme.primaryColor : theme.greyDarker}
     />
   ),
 };
@@ -44,11 +50,14 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Profile',
+  // eslint-disable-next-line
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    <Icon.Feather
+      name="user"
+      size={26}
+      style={{ marginBottom: -3 }}
+      color={focused ? theme.primaryColor : theme.greyDarker}
     />
   ),
 };

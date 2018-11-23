@@ -58,5 +58,4 @@ rules:
   no-use-before-define: 0
   no-case-declarations: 0
   global-require: 0
-  # CRLF
-  linebreak-style: 0
+  import/prefer-default-export: 0
