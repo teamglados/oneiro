@@ -86,3 +86,15 @@ export async function fetchCharging() {
   //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
   // );
 }
+
+export async function stopCharging() {
+  return {
+    timestamp: Date.now(),
+    address: 'Puumiehenkuja 3',
+    total: 2045, // cents
+    chargeTime: 1200000, // ms -> 20 mins
+  };
+  // return api.http.post(
+  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
+  // );
+}

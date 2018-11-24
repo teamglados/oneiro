@@ -1,7 +1,7 @@
 import { createDuck } from 'reducktion';
 
 import {
-  // takeEvery,
+  takeEvery,
   put,
   fork,
   take,
@@ -12,9 +12,11 @@ import {
 
 import { sleep } from '../../helpers/utils';
 import * as api from '../../helpers/api';
+// import navigation from '../../navigation/navigation.service';
 
 const model = createDuck({
   name: 'charging',
+  inject: ['payment'],
   state: {
     chargingPercentage: null,
     chargingStatus: 'PENDING',
@@ -23,10 +25,6 @@ const model = createDuck({
     isLoading: false,
   },
   actions: () => ({
-    startReservationPolling: state => ({ ...state }),
-    stopReservationPolling: state => ({ ...state }),
-    startChargingPolling: state => ({ ...state }),
-    stopChargingPolling: state => ({ ...state }),
     updateChargingPercentage: (state, action) => ({
       ...state,
       chargingPercentage: action.payload || 0,
@@ -35,11 +33,40 @@ const model = createDuck({
       ...state,
       chargingStatus: action.payload || 'PENDING',
     }),
+    stopCharging: state => ({ ...state }),
+
+    // Poller actions
+    startReservationPolling: state => ({ ...state }),
+    stopReservationPolling: state => ({ ...state }),
+    startChargingPolling: state => ({ ...state }),
+    stopChargingPolling: state => ({ ...state }),
   }),
-  sagas: ({ types }) => [watchPollReserveation(), watchPollCharging()],
+  sagas: ({ types, deps }) => [
+    takeEvery(types.stopCharging, stopChargingSaga, deps),
+    watchPollReserveation(),
+    watchPollCharging(),
+  ],
 });
 
 // Saga handlers
+function* stopChargingSaga(deps) {
+  try {
+    console.log('> stopChargingSaga');
+    yield put(model.actions.stopChargingPolling());
+
+    const receipt = yield call(api.stopCharging);
+    console.log('> Show receipt modal');
+    yield put(deps.payment.actions.showPaymentReceiptModal(receipt));
+
+    // Cleanup
+    yield put(model.actions.setChargingStatus('PENDING'));
+    yield put(model.actions.updateChargingPercentage(0));
+  } catch (error) {
+    console.log('Could not stop charging', error);
+  }
+}
+
+// Poller sagas
 function* reservationPolling() {
   yield call(sleep, 2000);
   try {

@@ -61,22 +61,20 @@ class ChargingStatus extends Component {
           style={StyleSheet.absoluteFillObject}
         >
           <Fitted>
-            {chargingStatus === 'CHARGING' && (
-              <AnimatedCircularProgress
-                size={200}
-                width={10}
-                fill={chargingPercentage}
-                tintColor={theme.primaryColorLighter}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor={theme.primaryColorDarker}
-              >
-                {fill => (
-                  <Text size={40} color={theme.primaryColor}>
-                    {`${Math.round(fill)}%`}
-                  </Text>
-                )}
-              </AnimatedCircularProgress>
-            )}
+            <AnimatedCircularProgress
+              size={200}
+              width={10}
+              fill={chargingPercentage || 0}
+              tintColor={theme.primaryColorLighter}
+              onAnimationComplete={() => console.log('onAnimationComplete')}
+              backgroundColor={theme.primaryColorDarker}
+            >
+              {fill => (
+                <Text size={40} color={theme.primaryColor}>
+                  {`${Math.round(fill)}%`}
+                </Text>
+              )}
+            </AnimatedCircularProgress>
             <Gutter vertical amount={24} />
             <Text color={theme.primaryColorDarkest} size={20} center>
               Your car is charging...

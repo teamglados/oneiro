@@ -6,8 +6,9 @@ import { initDucks } from 'reducktion';
 
 import station from './components/station/station.model';
 import charging from './components/charging/charging.model';
+import payment from './components/payment/payment.model';
 
-const ducks = initDucks([station, charging]);
+const ducks = initDucks([station, charging, payment]);
 const rootReducer = combineReducers(ducks.allReducers);
 
 // Start all sagas
