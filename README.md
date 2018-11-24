@@ -22,3 +22,8 @@ Run python server in root folder
 * `python3 -m http.server` and;
 * `open heatmap/heatmap_test.html`
 
+
+## Raspberry camera
+Detect and connect raspberry device
+* `arp -a`
+* `ssh pi@<deviceIP>` pw: raspberry
