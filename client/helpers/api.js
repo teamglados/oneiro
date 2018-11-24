@@ -69,8 +69,13 @@ export async function fetchNearbyStations({ latitude, longitude }) {
   );
 }
 
+let inc = 0;
 export async function fetchReservation() {
-  return { id: 1, status: 'CHARGING' };
+  inc += 1;
+
+  return inc > 20
+    ? { id: 1, status: 'CHARGING' }
+    : { id: 1, status: 'PENDING' };
   // return api.http.get(
   //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
   // );

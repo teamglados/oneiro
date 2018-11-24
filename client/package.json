@@ -16,6 +16,7 @@
     "@expo/samples": "2.1.1",
     "axios": "^0.18.0",
     "color": "^3.1.0",
+    "date-fns": "^1.29.0",
     "expo": "^31.0.2",
     "immer": "^1.8.0",
     "prop-types": "^15.6.2",

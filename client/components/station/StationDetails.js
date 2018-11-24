@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import openMap from 'react-native-open-maps';
-import { Icon } from 'expo';
 
 import Text from '../common/Text';
 import Flexer from '../common/Flexer';
 import Gutter from '../common/Gutter';
-import theme from '../../constants/theme';
+import RouteButton from '../common/RouteButton';
 
 export default class StationDetails extends Component {
   static propTypes = {
@@ -17,13 +15,8 @@ export default class StationDetails extends Component {
     imgUrl: PropTypes.string.isRequired,
   };
 
-  openExternalMap = () => {
-    const { latitude, longitude } = this.props;
-    openMap({ latitude, longitude });
-  };
-
   render() {
-    const { address, imgUrl } = this.props;
+    const { address, imgUrl, latitude, longitude } = this.props;
 
     return (
       <Fragment>
@@ -34,16 +27,7 @@ export default class StationDetails extends Component {
               {address}
             </Text>
             <Flexer />
-            <RouteButton onPress={this.openExternalMap}>
-              <Icon.MaterialIcons
-                name="directions"
-                size={26}
-                color={theme.primaryColor}
-              />
-              <Text size={10} color={theme.primaryColor}>
-                ROUTE
-              </Text>
-            </RouteButton>
+            <RouteButton latitude={latitude} longitude={longitude} />
           </Row>
 
           <Gutter vertical amount={4} />
@@ -82,11 +66,6 @@ const Content = styled.View`
 const Row = styled.View`
   flex-direction: row;
   align-items: center;
-`;
-
-const RouteButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
 `;
 
 const SocketInfo = styled.View`

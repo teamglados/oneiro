@@ -12,7 +12,7 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/plug_white.png'),
         require('./assets/images/plug.png'),
-        require('./assets/images/electric-car.png'),
+        require('./assets/images/charging.png'),
         require('./assets/images/socket.png'),
       ]),
       // Font.loadAsync({

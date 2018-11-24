@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, Alert } from 'react-native';
 
 import chargingModel from '../components/charging/charging.model';
+import stationModel from '../components/station/station.model';
 import Fade from '../components/common/Fade';
 import ChargingActive from '../components/charging/ChargingActive';
 import ChargingReserved from '../components/charging/ChargingReserved';
@@ -19,9 +20,12 @@ class ChargingStatus extends Component {
   };
 
   static propTypes = {
+    reservationTimer: PropTypes.instanceOf(Date),
+    reservationExpiry: PropTypes.instanceOf(Date),
     chargingPercentage: PropTypes.number,
     chargingStatus: PropTypes.oneOf(charginStatuses).isRequired,
     stopCharging: PropTypes.func.isRequired,
+    stationDetails: PropTypes.object,
   };
 
   stopCharging = () => {
@@ -41,7 +45,13 @@ class ChargingStatus extends Component {
   };
 
   render() {
-    const { chargingStatus, chargingPercentage } = this.props;
+    const {
+      chargingStatus,
+      chargingPercentage,
+      reservationTimer,
+      reservationExpiry,
+      stationDetails,
+    } = this.props;
 
     return (
       <Wrapper>
@@ -56,7 +66,11 @@ class ChargingStatus extends Component {
           visible={chargingStatus === 'RESERVED'}
           style={StyleSheet.absoluteFillObject}
         >
-          <ChargingReserved />
+          <ChargingReserved
+            reservationTimer={reservationTimer}
+            reservationExpiry={reservationExpiry}
+            stationDetails={stationDetails}
+          />
         </Fade>
 
         <Fade
@@ -83,6 +97,9 @@ const Wrapper = styled.View`
 const mapStateToProps = state => ({
   chargingPercentage: chargingModel.selectors.getChargingPercentage(state),
   chargingStatus: chargingModel.selectors.getChargingStatus(state),
+  reservationTimer: chargingModel.selectors.getReservationTimer(state),
+  reservationExpiry: chargingModel.selectors.getReservationExpiry(state),
+  stationDetails: stationModel.selectors.getReservedStationDetails(state),
 });
 
 const mapDispatchToProps = {

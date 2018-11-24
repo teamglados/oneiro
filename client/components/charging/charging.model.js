@@ -1,4 +1,5 @@
 import { createDuck } from 'reducktion';
+import { addSeconds, addMinutes } from 'date-fns';
 
 import {
   takeEvery,
@@ -20,6 +21,8 @@ const model = createDuck({
   state: {
     chargingPercentage: null,
     chargingStatus: 'PENDING',
+    reservationTimer: null,
+    reservationExpiry: null,
     error: undefined,
     hasError: false,
     isLoading: false,
@@ -34,6 +37,19 @@ const model = createDuck({
       chargingStatus: action.payload || 'PENDING',
     }),
     stopCharging: state => ({ ...state }),
+    startReservationTimer: state => ({
+      ...state,
+      reservationTimer: new Date(),
+      reservationExpiry: addMinutes(new Date(), 15),
+    }),
+    stopReservationTimer: state => ({
+      ...state,
+      reservationTimer: null,
+    }),
+    incReservationTimer: state => ({
+      ...state,
+      reservationTimer: addSeconds(state.reservationTimer, 1),
+    }),
 
     // Poller actions
     startReservationPolling: state => ({ ...state }),
@@ -45,6 +61,7 @@ const model = createDuck({
     takeEvery(types.stopCharging, stopChargingSaga, deps),
     watchPollReserveation(),
     watchPollCharging(),
+    watchReservationTimer(),
   ],
 });
 
@@ -66,8 +83,20 @@ function* stopChargingSaga(deps) {
   }
 }
 
-// Poller sagas
-function* reservationPolling() {
+// Poller / timer sagas
+function* reservationTimerSaga() {
+  try {
+    while (true) {
+      yield put(model.actions.incReservationTimer());
+      yield call(sleep, 1000); // update every minute?
+    }
+  } finally {
+    if (yield cancelled()) console.log('> Reservation timer cancelled');
+    console.log('> Reservation timer ended');
+  }
+}
+
+function* reservationPollingSaga() {
   yield call(sleep, 2000);
   try {
     while (true) {
@@ -91,7 +120,7 @@ function* reservationPolling() {
           yield put(model.actions.setChargingStatus('CHARGING'));
           yield put(model.actions.startChargingPolling());
           yield put(model.actions.stopReservationPolling());
-        } else if (status === 'PENDING') {
+        } else if (status === 'EXPIRED') {
           // TODO: handle
         }
       }
@@ -104,7 +133,7 @@ function* reservationPolling() {
   }
 }
 
-function* chargingPolling() {
+function* chargingPollingSaga() {
   yield call(sleep, 2000);
   try {
     while (true) {
@@ -141,7 +170,7 @@ function* chargingPolling() {
 
 function* watchPollReserveation() {
   while (yield take(model.types.startReservationPolling)) {
-    const pollForReservationTask = yield fork(reservationPolling);
+    const pollForReservationTask = yield fork(reservationPollingSaga);
     yield take(model.types.stopReservationPolling);
     yield cancel(pollForReservationTask);
   }
@@ -149,9 +178,17 @@ function* watchPollReserveation() {
 
 function* watchPollCharging() {
   while (yield take(model.types.startChargingPolling)) {
-    const pollForChargingTask = yield fork(chargingPolling);
+    const pollForChargingTask = yield fork(chargingPollingSaga);
     yield take(model.types.stopChargingPolling);
     yield cancel(pollForChargingTask);
+  }
+}
+
+function* watchReservationTimer() {
+  while (yield take(model.types.startReservationTimer)) {
+    const reservationTimerTask = yield fork(reservationTimerSaga);
+    yield take(model.types.stopReservationTimer);
+    yield cancel(reservationTimerTask);
   }
 }
 

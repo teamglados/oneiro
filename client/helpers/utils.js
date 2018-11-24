@@ -16,6 +16,12 @@ const {
 
 export const sleep = (ms = 500) => new Promise(rslv => setTimeout(rslv, ms));
 
+export const msToMinAndSec = ms => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = ((ms % 60000) / 1000).toFixed(0);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
 export function runSpring(value, dest, opts = {}) {
   const clock = new Clock();
   const state = {

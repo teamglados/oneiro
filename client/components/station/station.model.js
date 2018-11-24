@@ -11,6 +11,7 @@ const model = createDuck({
   state: {
     nearbyStations: [],
     selectedStation: null,
+    reservedStation: null,
     error: undefined,
     hasError: false,
     isLoading: false,
@@ -25,12 +26,19 @@ const model = createDuck({
       ...state,
       selectedStation: null,
     }),
-    reserveSelectedStation: state => ({ ...state }),
+    reserveSelectedStation: state => ({
+      ...state,
+      reservedStation: state.selectedStation,
+    }),
   }),
   selectors: ({ name }) => ({
     getSelectedStationDetails: state => {
       const { nearbyStations, selectedStation } = state[name];
       return nearbyStations.find(x => x.id === selectedStation);
+    },
+    getReservedStationDetails: state => {
+      const { nearbyStations, reservedStation } = state[name];
+      return nearbyStations.find(x => x.id === reservedStation);
     },
   }),
   sagas: ({ types, deps }) => [
@@ -63,6 +71,7 @@ function* reserveSelectedStationSaga(deps) {
 
     // Update status
     yield put(deps.charging.actions.setChargingStatus('RESERVED'));
+    yield put(deps.charging.actions.startReservationTimer());
 
     // Go to Charging tab
     navigation.navigate('ChargingStack');
@@ -71,7 +80,7 @@ function* reserveSelectedStationSaga(deps) {
     yield put(deps.charging.actions.startReservationPolling());
 
     // Cleanup
-    yield put(model.actions.clearSelectedStation());
+    // yield put(model.actions.clearSelectedStation());
   } catch (error) {
     console.log('Failed to reserve station', error);
   }
