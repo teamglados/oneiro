@@ -30,6 +30,8 @@ GET https://api.teamglados.com/history/<userid>
   {
     ok: True,
     duration: <duration in minutes>,
+    owners_cut: <€ amount for point owner>,
+    total_cost: <total cost in €>,
     charging_cost: <charging cost in €>,
     parking_cost: <parking cost in €>
   },
@@ -58,6 +60,7 @@ GET https://api.teamglados.com/spot/status/<spotid>
     {
       status: 'Charging'
     }
+    ...<X number of connectors>
   ]
 }
 ```
@@ -82,11 +85,15 @@ When start charging, need to put controller from A to C mode for charging to sta
 
 **Stop charging**
 
-Stops charging and spot will become unavailable (light turns red)
+Stops charging and spot will become unavailable (light turns red). Returns summary:
 
 ```
 POST https://api.teamglados.com/spot/stop/<spotid>
 {
-  ok: true
+  ok: true,
+  duration: <duration in minutes>,
+  total_cost: <total cost in €>,
+  charging_cost: <charging cost in €>,
+  parking_cost: <parking cost in €>
 }
 ```
