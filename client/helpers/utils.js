@@ -1,6 +1,10 @@
+import { Platform } from 'react-native';
+
 /* eslint-disable import/no-extraneous-dependencies */
 import Animated from 'react-native-reanimated';
 /* eslint-enable import/no-extraneous-dependencies */
+
+import LAYOUT from '../constants/layout';
 
 const {
   Value,
@@ -21,6 +25,15 @@ export const msToMinAndSec = ms => {
   const seconds = ((ms % 60000) / 1000).toFixed(0);
   return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
+
+const a = LAYOUT.wHeight === 812 || LAYOUT.wWidth === 812;
+const b = LAYOUT.wHeight === 896 || LAYOUT.wWidth === 896;
+export const isIphoneWithNotch =
+  Platform.OS === 'ios' && !Platform.isPad && !Platform.isTVOS && (a || b);
+
+export function ifIsIphoneWithNotch(iphoneXStyle, regularStyle) {
+  return isIphoneWithNotch ? iphoneXStyle : regularStyle;
+}
 
 export function runSpring(value, dest, opts = {}) {
   const clock = new Clock();

@@ -11,7 +11,7 @@ import Animated from 'react-native-reanimated';
 
 import stationModel from './station.model';
 import LAYOUT from '../../constants/layout';
-import { runSpring } from '../../helpers/utils';
+import { runSpring, isIphoneWithNotch } from '../../helpers/utils';
 import StationDetails from './StationDetails';
 import Flexer from '../common/Flexer';
 import Text from '../common/Text';
@@ -157,7 +157,7 @@ const StationDetailsContent = styled.View`
 `;
 
 const ReserveControls = styled.View`
-  margin-bottom: 70px;
+  margin-bottom: ${isIphoneWithNotch ? 100 : 70}px;
   padding-horizontal: 16px;
 `;
 

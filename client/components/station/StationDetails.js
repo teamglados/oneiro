@@ -72,24 +72,34 @@ export default class StationDetails extends Component {
               <Prices>
                 <Row>
                   <Text size={16} color={theme.greyDarkest}>
-                    Per kWh:
+                    Charging fee:
                   </Text>
                   <Price>
                     <Text size={16} bold>
                       0.25 €
                     </Text>
                   </Price>
+                  <Unit>
+                    <Text size={16} color={theme.greyDarkest}>
+                      /kWh
+                    </Text>
+                  </Unit>
                 </Row>
 
                 <Row>
                   <Text size={16} color={theme.greyDarkest}>
-                    Parkkimaksu:
+                    Parking fee:
                   </Text>
                   <Price>
                     <Text size={16} bold>
                       1 €
                     </Text>
                   </Price>
+                  <Unit>
+                    <Text size={16} color={theme.greyDarkest}>
+                      /h
+                    </Text>
+                  </Unit>
                 </Row>
               </Prices>
             </Row>
@@ -120,8 +130,13 @@ const Prices = styled.View`
 `;
 
 const Price = styled.View`
-  width: 80px;
+  width: 70px;
   align-items: flex-end;
+`;
+
+const Unit = styled.View`
+  width: 40px;
+  margin-left: 4px;
 `;
 
 const ChargingInfo = styled.View`
