@@ -3,6 +3,8 @@ from sanic.response import json
 
 from enstoflow import Enstoflow
 from api import Api
+from licence_plate import recognize
+from utils import write_picture_to_file
 
 ensto = Enstoflow()
 api = Api(ensto)
@@ -47,9 +49,10 @@ async def charging_stop_route(request, spotId):
 
 @server.route('/postimage', methods=['POST'])
 async def image_route(request):
-    # TODO:
-    # Save image
-    # Use alpr api to detect
+    img_path = '/tmp/plate_image.jpg'
+    write_picture_to_file(request.json["media"], img_path)
+    output = recognize(img_path)
+    # Save output to db
     return json({ 'ok': True })
 
 @server.route('/detect/<spotId>/<license>', methods=['POST'])
