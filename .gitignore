@@ -1,2 +1,11 @@
 __pycache__
 *.pyc
+
+# No data files
+data/*
+
+# DS_Store
+.DS_Store
+
+# VS code shit
+.vscode/*
