@@ -26,7 +26,11 @@ async def history_route(request, userId):
 
 @server.route('/spot/status/<spotId>', methods=['GET'])
 async def spot_status_route(request, spotId):
-    return json(api.spot_status())
+    return json(api.spot_status(spotId))
+
+@server.route('/spot/status/auth/<spotId>', methods=['GET'])
+async def spot_status_auth_route(request, spotId):
+    return json(api.spot_status_auth(spotId))
 
 @server.route('/spot/start/<spotId>', methods=['POST'])
 async def charging_start_route(request, spotId):
