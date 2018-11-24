@@ -70,6 +70,7 @@ class Api:
             charging_result = {
                 'ok': True,
                 'duration': duration_minutes,
+                'total_cost': total_cost,
                 'charging_cost': charging_cost,
                 'parking_cost': parking_cost,
             }
