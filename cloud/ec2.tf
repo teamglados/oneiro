@@ -7,7 +7,7 @@ resource "aws_instance" "Server" {
 
   availability_zone = "${data.aws_availability_zones.available.names[0]}"
 
-  instance_type = "t2.nano"
+  instance_type = "t2.small"
   iam_instance_profile = "${aws_iam_instance_profile.Server.name}"
   associate_public_ip_address = true
 
