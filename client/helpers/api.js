@@ -73,9 +73,7 @@ let inc = 0;
 export async function fetchReservation() {
   inc += 1;
 
-  return inc > 20
-    ? { id: 1, status: 'CHARGING' }
-    : { id: 1, status: 'PENDING' };
+  return inc > 3 ? { id: 1, status: 'CHARGING' } : { id: 1, status: 'PENDING' };
   // return api.http.get(
   //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
   // );
@@ -96,7 +94,9 @@ export async function stopCharging() {
   return {
     timestamp: Date.now(),
     address: 'Puumiehenkuja 3',
-    total: 2045, // cents
+    chargingCost: 2045, // cents
+    parkingCost: 2045, // cents
+    totalCost: 2045, // cents
     chargeTime: 1200000, // ms -> 20 mins
   };
   // return api.http.post(

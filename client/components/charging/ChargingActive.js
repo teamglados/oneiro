@@ -23,7 +23,7 @@ export default class ChargingStatus extends Component {
         <Flexer />
 
         <AnimatedCircularProgress
-          size={200}
+          size={250}
           width={10}
           fill={percentage || 0}
           tintColor={theme.primaryColorLighter}
@@ -31,7 +31,7 @@ export default class ChargingStatus extends Component {
           backgroundColor={theme.primaryColorDarker}
         >
           {fill => (
-            <Text size={40} color={theme.primaryColor}>
+            <Text size={50} color={theme.primaryColor}>
               {`${Math.round(fill)}%`}
             </Text>
           )}

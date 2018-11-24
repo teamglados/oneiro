@@ -75,8 +75,8 @@ const Wrapper = styled.View`
 `;
 
 const StatusImage = styled.Image`
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
 `;
 
 const RouteInfo = styled.View`
