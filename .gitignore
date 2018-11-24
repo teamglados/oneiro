@@ -13,4 +13,4 @@ data/*
 
 # Terraform
 .terraform
-
+.tfstate*
