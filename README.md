@@ -27,3 +27,29 @@ Run python server in root folder
 Detect and connect raspberry device
 * `arp -a`
 * `ssh pi@<deviceIP>` pw: raspberry
+
+## Server
+
+```
+docker run -p 8000:8000 -e LIVE_MODE=true -v /tmp:/tmp --name glados glados:latest
+```
+
+`/opt/api/server/server.py`
+
+## ICE Checklist
+
+- Check server responding to **HTTPS://**api.teamglados.com/
+
+- If not, is network connection OK?
+
+- Is container running in AWS? (login command)
+
+- If yes, is server responding to https://api.teamglados.com/spot/status/foo
+
+- If not is basic auth expired?
+
+- Is deployed with LIVE_MODE=true or not?
+
+- Is rpi connected? Do you see /postimage log?
+
+- Is rpi operational (software failure)?
