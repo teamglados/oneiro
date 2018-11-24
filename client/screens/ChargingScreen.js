@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Text from '../components/common/Text';
+
+import ChargingPending from '../components/charging/ChargingPending';
 
 export default class ChargingScreen extends React.Component {
   static navigationOptions = {
@@ -10,7 +11,7 @@ export default class ChargingScreen extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Text>Charging here</Text>
+        <ChargingPending />
       </Wrapper>
     );
   }
@@ -19,6 +20,4 @@ export default class ChargingScreen extends React.Component {
 const Wrapper = styled.SafeAreaView`
   flex: 1;
   background-color: #fff;
-  justify-content: center;
-  align-items: center;
 `;

@@ -4,9 +4,10 @@ import createSagaMiddleware from 'redux-saga';
 import logger from 'redux-logger';
 import { initDucks } from 'reducktion';
 
-import stationDucks from './components/station/station.ducks';
+import station from './components/station/station.model';
+import charging from './components/charging/charging.model';
 
-const ducks = initDucks([stationDucks]);
+const ducks = initDucks([station, charging]);
 const rootReducer = combineReducers(ducks.allReducers);
 
 // Start all sagas
