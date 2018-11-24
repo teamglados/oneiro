@@ -151,8 +151,9 @@ class StationDetailsModal extends React.PureComponent {
 const StationDetailsContent = styled.View`
   height: ${wHeight - 100}px;
   background-color: #fff;
-  border-top-right-radius: 8;
-  border-top-left-radius: 8;
+  border-top-right-radius: 16px;
+  border-top-left-radius: 16px;
+  overflow: hidden;
 `;
 
 const ReserveControls = styled.View`
@@ -167,8 +168,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: wWidth,
     height: wHeight,
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
     paddingTop: 100,
   },
   backdrop: {

@@ -30,8 +30,7 @@ export default class StationDetails extends Component {
 
 const HeaderImage = styled.Image`
   height: 200px;
-  border-top-right-radius: 8;
-  border-top-left-radius: 8;
+  width: 100%;
   background-color: ${props => props.theme.greyLighter};
 `;
 
