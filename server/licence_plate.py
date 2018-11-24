@@ -1,7 +1,19 @@
 from openalpr import Alpr
 
-alpr = Alpr("eu", "/etc/openalpr/openalpr.conf", "/usr/share/openalpr/runtime_data")
+country = "eu"
+default_region = "fi"
+detect_region = False
+
+alpr = Alpr(country, "/etc/openalpr/openalpr.conf", "/usr/share/openalpr/runtime_data")
 alpr.set_top_n(5)
+alpr.set_default_region(default_region)
+alpr.set_detect_region(detect_region)
+
+print('ALPR config: country={}, default_region={}, detect_region={}'.format(
+    country,
+    default_region,
+    detect_region
+))
 
 def recognize(file_path):
     cv_output = []
