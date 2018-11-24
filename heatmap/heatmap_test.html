@@ -26,7 +26,7 @@ var map = new mapboxgl.Map({
 });
 
 map.on('load', function() {
-    map.addSource('earthquakes', {
+    map.addSource('activity-data', {
         "type": "geojson",
         "data": "http://localhost:8000/data/activity_data/Uusimaa_activity_data_hourly_20_min_break_MTC_201801.geojson"
     });
@@ -54,16 +54,16 @@ map.on('load', function() {
         });
 
     map.addLayer({
-        "id": "earthquakes-heat",
+        "id": "activity-heat",
         "type": "heatmap",
-        "source": "earthquakes",
+        "source": "activity-data",
         "paint": {
             "heatmap-weight": [
                 "interpolate",
                 ["linear"],
                 ["get", "count"],
                 0, 0,
-                9695, 1
+                10000, 1
             ],
             "heatmap-color": [
                 "interpolate",
