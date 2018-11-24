@@ -59,7 +59,9 @@ class Enstoflow:
             'chargingPoint',
             identifier,
             connector,
-            'starttransaction', tag) == {}
+            'starttransaction',
+            tag
+        ) == {}
 
     def stopChargeTransaction(self, identifier, connector):
         return self.get(

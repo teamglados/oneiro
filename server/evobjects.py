@@ -73,7 +73,7 @@ class ChargingPoint:
         return self.api.deleteChargingPoint(self.identifier)
 
     def softReset(self):
-        return self.api.softResetChargingPoint(self.identifier) == {}
+        return self.api.softResetChargingPoint(self.identifier)
 
     def hardReset(self):
         return self.api.hardResetChargingPoint(self.identifier)
