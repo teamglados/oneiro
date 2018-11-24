@@ -52,7 +52,7 @@ async def charging_stop_route(request, spotId):
 
 @server.route('/postimage', methods=['POST'])
 async def image_route(request):
-    write_picture_to_file(request.json["media"], IMAGE_PATH)
+    write_picture_to_file(request.files.get('media').body, IMAGE_PATH)
     output = recognize(IMAGE_PATH)
     print(output)
     return json({ 'ok': True })

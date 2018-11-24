@@ -14,5 +14,5 @@ def recognize(file_path):
                 "confidence": candidate['confidence']
             })
 
-    alpr.unload()
+    #alpr.unload()
     return cv_output
