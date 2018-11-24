@@ -17,6 +17,7 @@ class Api:
         self.expected_spot_identifier = 'JunctionEVB1' \
             if self.live else 'junction-6'
 
+        self.auth = False
         self.history = []
 
         for group in ensto.getChargingPointGroups():
@@ -31,10 +32,11 @@ class Api:
         return self.spot.connectors[-1]
 
     def get_history(self, *args, **kwargs):
-        return self.history
+        return { 'ok': True, 'history': self.history }
 
     def spot_status(self, *args, **kwargs):
         result = {
+            'ok': True,
             'identifier': self.spot.identifier,
             'connectors': []
         }
@@ -46,10 +48,15 @@ class Api:
             })
         return result
 
+    def spot_status_auth(self, *args, **kwargs):
+        return { 'ok': True, 'auth': self.auth }
+
     def spot_authenticate(self, detector_output, *args, **kwargs):
         for item in detector_output:
             if item['confidence'] >= 75:
+                self.auth = True
                 return self.spot_enable()
+        self.auth = False
         return { 'ok': False }
 
     def spot_enable(self, *args, **kwargs):

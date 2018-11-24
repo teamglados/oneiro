@@ -26,17 +26,20 @@ Returns all completed charging transactions.
 ```
 GET https://api.teamglados.com/history/<userid>
 
-[
-  {
-    ok: True,
-    duration: <duration in minutes>,
-    owners_cut: <€ amount for point owner>,
-    total_cost: <total cost in €>,
-    charging_cost: <charging cost in €>,
-    parking_cost: <parking cost in €>
-  },
-  ...
-]
+{
+  ok: true,
+  history: [
+    {
+      ok: True,
+      duration: <duration in minutes>,
+      owners_cut: <€ amount for point owner>,
+      total_cost: <total cost in €>,
+      charging_cost: <charging cost in €>,
+      parking_cost: <parking cost in €>
+    },
+    ...
+  ]
+}
 ```
 
 **Get spot status**
@@ -45,7 +48,9 @@ Returns automatically selected valid spot status
 
 ```
 GET https://api.teamglados.com/spot/status/<spotid>
+
 {
+  ok: true,
   identifier: '<currently active spot identifier>',
   connectors: [
     {
@@ -69,6 +74,20 @@ Unavailable = light is red
 Available = light is green  
 Pending = light is green, awaiting car to start charging  
 Charging = light is blue  
+
+**Get spot auth status**
+
+Returns true if reserved license plate was detected. You can poll this very
+often. As soon as it returns `auth: true` you should get **spot status** (above).
+
+```
+GET https://api.teamglados.com/spot/status/auth/<spotid>
+
+{
+  ok: true,
+  auth: <auth status|true or false>,
+}
+```
 
 **Start charging**
 
