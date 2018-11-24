@@ -1,4 +1,6 @@
 import axios from 'axios';
+// import { addHours } from 'date-fns';
+
 import config from '../config';
 
 const httpClient = axios.create({
@@ -73,7 +75,14 @@ let inc = 0;
 export async function fetchReservation() {
   inc += 1;
 
-  return inc > 3 ? { id: 1, status: 'CHARGING' } : { id: 1, status: 'PENDING' };
+  const base = {
+    id: 1,
+    // endingTime: addHours(new Date(), 5),
+  };
+
+  return inc > 4
+    ? { ...base, status: 'PENDING' }
+    : { ...base, status: 'PLANNING' };
   // return api.http.get(
   //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
   // );

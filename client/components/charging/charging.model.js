@@ -2,7 +2,7 @@ import { createDuck } from 'reducktion';
 import { addSeconds, addMinutes } from 'date-fns';
 
 import {
-  takeEvery,
+  takeLatest,
   put,
   fork,
   take,
@@ -20,7 +20,7 @@ const model = createDuck({
   inject: ['payment'],
   state: {
     chargingPercentage: null,
-    chargingStatus: 'PENDING',
+    chargingStatus: 'PLANNING',
     reservationTimer: null,
     reservationExpiry: null,
     error: undefined,
@@ -34,9 +34,10 @@ const model = createDuck({
     }),
     setChargingStatus: (state, action) => ({
       ...state,
-      chargingStatus: action.payload || 'PENDING',
+      chargingStatus: action.payload || 'PLANNING',
     }),
     stopCharging: state => ({ ...state }),
+    startCharging: state => ({ ...state }),
     startReservationTimer: state => ({
       ...state,
       reservationTimer: new Date(),
@@ -58,7 +59,8 @@ const model = createDuck({
     stopChargingPolling: state => ({ ...state }),
   }),
   sagas: ({ types, deps }) => [
-    takeEvery(types.stopCharging, stopChargingSaga, deps),
+    takeLatest(types.stopCharging, stopChargingSaga, deps),
+    takeLatest(types.startCharging, startChargingSaga),
     watchPollReserveation(),
     watchPollCharging(),
     watchReservationTimer(),
@@ -76,10 +78,20 @@ function* stopChargingSaga(deps) {
     yield put(deps.payment.actions.showPaymentReceiptModal(receipt));
 
     // Cleanup
-    yield put(model.actions.setChargingStatus('PENDING'));
+    yield put(model.actions.setChargingStatus('PLANNING'));
     yield put(model.actions.updateChargingPercentage(0));
   } catch (error) {
     console.log('Could not stop charging', error);
+  }
+}
+
+function* startChargingSaga() {
+  try {
+    yield put(model.actions.updateChargingPercentage(0));
+    yield put(model.actions.startChargingPolling());
+    yield put(model.actions.setChargingStatus('CHARGING'));
+  } catch (error) {
+    console.log('Could not start charging', error);
   }
 }
 
@@ -115,10 +127,8 @@ function* reservationPollingSaga() {
       if (apiRequestOk && reservation) {
         const { status } = reservation;
 
-        if (status === 'CHARGING') {
-          yield put(model.actions.updateChargingPercentage(0));
-          yield put(model.actions.setChargingStatus('CHARGING'));
-          yield put(model.actions.startChargingPolling());
+        if (status === 'PENDING') {
+          yield put(model.actions.setChargingStatus('PENDING'));
           yield put(model.actions.stopReservationPolling());
         } else if (status === 'EXPIRED') {
           // TODO: handle

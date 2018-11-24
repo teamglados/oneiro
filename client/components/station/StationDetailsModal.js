@@ -157,7 +157,7 @@ const StationDetailsContent = styled.View`
 `;
 
 const ReserveControls = styled.View`
-  margin-bottom: 80px;
+  margin-bottom: 70px;
   padding-horizontal: 16px;
 `;
 

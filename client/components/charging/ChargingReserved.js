@@ -9,18 +9,22 @@ import RouteButton from '../common/RouteButton';
 import theme from '../../constants/theme';
 import { msToMinAndSec } from '../../helpers/utils';
 
-export default class ChargingPending extends Component {
+export default class ChargingReserved extends Component {
   static propTypes = {
     reservationTimer: PropTypes.instanceOf(Date),
     reservationExpiry: PropTypes.instanceOf(Date),
     stationDetails: PropTypes.shape({
       latitude: PropTypes.number.isRequired,
       longitude: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
   };
 
   render() {
-    const { reservationTimer, reservationExpiry, stationDetails } = this.props;
+    const {
+      reservationTimer,
+      reservationExpiry,
+      stationDetails = {},
+    } = this.props;
 
     return (
       <Wrapper>
@@ -64,7 +68,8 @@ export default class ChargingPending extends Component {
 }
 
 const Wrapper = styled.View`
-  padding: 16px;
+  padding-horizontal: 16px;
+  padding-vertical: 24px;
   position: absolute;
   top: 0;
   bottom: 0;

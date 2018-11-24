@@ -10,11 +10,12 @@ import Fade from '../components/common/Fade';
 import ChargingActive from '../components/charging/ChargingActive';
 import ChargingReserved from '../components/charging/ChargingReserved';
 import ChargingPending from '../components/charging/ChargingPending';
+import ChargingPlanning from '../components/charging/ChargingPlannig';
 import ReceiptModal from '../components/payment/ReceiptModal';
 
-const charginStatuses = ['PENDING', 'RESERVED', 'CHARGING'];
+const charginStatuses = ['PLANNING', 'PENDING', 'RESERVED', 'CHARGING'];
 
-class ChargingStatus extends Component {
+class ChargingScreen extends Component {
   static navigationOptions = {
     header: null,
   };
@@ -25,6 +26,7 @@ class ChargingStatus extends Component {
     chargingPercentage: PropTypes.number,
     chargingStatus: PropTypes.oneOf(charginStatuses).isRequired,
     stopCharging: PropTypes.func.isRequired,
+    startCharging: PropTypes.func.isRequired,
     stationDetails: PropTypes.object,
   };
 
@@ -56,10 +58,17 @@ class ChargingStatus extends Component {
     return (
       <Wrapper>
         <Fade
+          visible={chargingStatus === 'PLANNING'}
+          style={StyleSheet.absoluteFillObject}
+        >
+          <ChargingPlanning />
+        </Fade>
+
+        <Fade
           visible={chargingStatus === 'PENDING'}
           style={StyleSheet.absoluteFillObject}
         >
-          <ChargingPending />
+          <ChargingPending startCharging={this.props.startCharging} />
         </Fade>
 
         <Fade
@@ -104,9 +113,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   stopCharging: chargingModel.actions.stopCharging,
+  startCharging: chargingModel.actions.startCharging,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChargingStatus);
+)(ChargingScreen);

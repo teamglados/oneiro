@@ -160,7 +160,7 @@ const Row = styled.View`
 `;
 
 const Header = styled.View`
-  background-color: ${props => props.theme.primaryColorDarker};
+  background-color: ${props => props.theme.primaryColorDark};
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;

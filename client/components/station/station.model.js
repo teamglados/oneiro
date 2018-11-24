@@ -1,6 +1,7 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
 import { createDuck, createApiAction } from 'reducktion';
 import { Image } from 'react-native';
+import { addHours } from 'date-fns';
 
 import mockStations from './mock-stations.json';
 import navigation from '../../navigation/navigation.service';
@@ -50,7 +51,11 @@ const model = createDuck({
 // Saga handlers
 function* fetchNearbyStationsSaga() {
   try {
-    yield put(model.actions.fetchNearbyStations.success(mockStations));
+    const stations = mockStations.map(s => ({
+      ...s,
+      endingTime: addHours(new Date(), 5),
+    }));
+    yield put(model.actions.fetchNearbyStations.success(stations));
 
     const preFetchImages = mockStations.map(({ imgUrl }) =>
       Image.prefetch(imgUrl)
@@ -80,7 +85,7 @@ function* reserveSelectedStationSaga(deps) {
     yield put(deps.charging.actions.startReservationPolling());
 
     // Cleanup
-    // yield put(model.actions.clearSelectedStation());
+    yield put(model.actions.clearSelectedStation());
   } catch (error) {
     console.log('Failed to reserve station', error);
   }
