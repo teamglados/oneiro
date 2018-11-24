@@ -1,4 +1,4 @@
-FROM openalpr:latest
+FROM openalpr:16.04
 
 MAINTAINER Andreas Urbanski <urbanski.andreas@gmail.com>
 
