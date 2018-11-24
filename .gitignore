@@ -16,3 +16,6 @@ cloud/.terraform
 cloud/.tfstate
 cloud/*.tfstate*
 cloud/vars.tf
+
+# Other
+deploy.sh
