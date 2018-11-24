@@ -8,63 +8,38 @@ from licence_plate import recognize
 from utils import write_picture_to_file
 
 IMAGE_PATH = os.getenv('IMAGE_PATH', '/tmp/plate_image.jpg')
+LIVE_MODE = bool(os.getenv('LIVE_MODE', False))
 
 ensto = Enstoflow()
-api = Api(ensto)
 server = Sanic()
+api = Api(ensto, live=LIVE_MODE)
+
+print('Running in live={}'.format(LIVE_MODE))
 
 @server.route('/', methods=['GET'])
 async def status_route(request):
     return json({'ok': True})
 
-@server.route('/profile/<userId>', methods=['GET'])
-async def profile_route(request, userId):
-    # TODO: Returns user profile by id, with history etc.
-    return json({})
-
-@server.route('/spot', methods=['GET'])
-async def spot_status_all_route(request, spotId, userId):
-    # TODO: Returns all spots available with coords, reserve status,
-    # price
-    return json({})
+@server.route('/history/<userId>', methods=['GET'])
+async def history_route(request, userId):
+    return json(api.history)
 
 @server.route('/spot/status/<spotId>', methods=['GET'])
-async def spot_status_route(request, spotId, userId):
-    # TODO: Returns current spot charging status, who is charging
-    # for how long, cost etc.
-    return json({})
-
-@server.route('/spot/reserve/<spotId>/<userId>', methods=['POST'])
-async def spot_reserve_route(request, spotId, userId):
-    # TODO: Reserves spot for userId for X minutes
-    return json({})
+async def spot_status_route(request, spotId):
+    return json(api.spot_status())
 
 @server.route('/spot/start/<spotId>', methods=['POST'])
 async def charging_start_route(request, spotId):
-    # TODO: Sets owner history start time
-    return json({})
+    return json(api.spot_start_charging(spotId))
 
-@server.route('/stop/stop/<spotId>', methods=['POST'])
+@server.route('/spot/stop/<spotId>', methods=['POST'])
 async def charging_stop_route(request, spotId):
-    # TODO: Returns summary of charging time, cost, adds to owner
-    # history
-    return json({})
+    return json(api.spot_stop_charging(spotId))
 
 @server.route('/postimage', methods=['POST'])
 async def image_route(request):
     write_picture_to_file(request.files.get('media').body, IMAGE_PATH)
-    output = recognize(IMAGE_PATH)
-    print(output)
-    return json({ 'ok': True })
-
-@server.route('/detect/<spotId>/<license>', methods=['POST'])
-async def detect_route(request, spotId, license):
-    return json({})
-
-@server.route('/detect/<spotId>', methods=['GET'])
-async def detect_status_route(request, spotId):
-    # TODO: Returns detected licenses per spot
-    return json({})
+    return json(api.spot_authenticate(recognize(IMAGE_PATH)))
 
 if __name__ == '__main__':
     server.run(host='0.0.0.0', port=8000)
