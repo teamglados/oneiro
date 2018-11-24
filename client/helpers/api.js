@@ -68,3 +68,21 @@ export async function fetchNearbyStations({ latitude, longitude }) {
     `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
   );
 }
+
+export async function fetchReservation() {
+  return { id: 1, status: 'CHARGING' };
+  // return api.http.get(
+  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
+  // );
+}
+
+let percentage = 0;
+export async function fetchCharging() {
+  percentage += 1;
+  return percentage >= 100
+    ? { id: 1, percentage: 100, status: 'COMPLETE' }
+    : { id: 1, percentage: Math.min(percentage, 100), status: 'CHARGING' };
+  // return api.http.get(
+  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
+  // );
+}

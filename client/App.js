@@ -1,16 +1,6 @@
 import React from 'react';
-import { Platform, StatusBar } from 'react-native';
 import { AppLoading, Asset } from 'expo';
-import styled, { ThemeProvider } from 'styled-components';
-import { Provider } from 'react-redux';
-
-import AppNavigator from './navigation/AppNavigator';
-import theme from './constants/theme';
-import configureStore from './store';
-import { connectApiToStore } from './helpers/api';
-
-const store = configureStore();
-connectApiToStore(store);
+import Root from './Root';
 
 export default class App extends React.Component {
   state = {
@@ -22,6 +12,7 @@ export default class App extends React.Component {
       Asset.loadAsync([
         require('./assets/images/plug_white.png'),
         require('./assets/images/plug.png'),
+        require('./assets/images/electric-car.png'),
       ]),
       // Font.loadAsync({
       //   // This is the font that we are using for our tab bar
@@ -54,20 +45,6 @@ export default class App extends React.Component {
       );
     }
 
-    return (
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <AppContainer>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-          </AppContainer>
-        </ThemeProvider>
-      </Provider>
-    );
+    return <Root />;
   }
 }
-
-const AppContainer = styled.View`
-  flex: 1;
-  background-color: #fff;
-`;

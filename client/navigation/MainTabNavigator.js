@@ -4,11 +4,12 @@ import { Icon } from 'expo';
 import {
   createStackNavigator,
   createBottomTabNavigator,
+  // createNavigationContainer,
 } from 'react-navigation';
 
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/ChargingScreen';
-import SettingsScreen from '../screens/ProfileScreen';
+import ChargingScreen from '../screens/ChargingScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import theme from '../constants/theme';
 
 const HomeStack = createStackNavigator({
@@ -28,11 +29,11 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ChargingStack = createStackNavigator({
+  Charging: ChargingScreen,
 });
 
-LinksStack.navigationOptions = {
+ChargingStack.navigationOptions = {
   tabBarLabel: 'Charging',
   // eslint-disable-next-line
   tabBarIcon: ({ focused }) => (
@@ -45,11 +46,11 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
 });
 
-SettingsStack.navigationOptions = {
+ProfileStack.navigationOptions = {
   tabBarLabel: 'Profile',
   // eslint-disable-next-line
   tabBarIcon: ({ focused }) => (
@@ -64,6 +65,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  ChargingStack,
+  ProfileStack,
 });

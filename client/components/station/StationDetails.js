@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import { Image, StyleSheet, Dimensions } from 'react-native';
-import LAYOUT from '../../constants/layout';
-import Text from '../common/Text';
 
-const { wHeight } = LAYOUT;
+import Text from '../common/Text';
 
 export default class StationDetails extends Component {
   static propTypes = {
@@ -19,24 +16,17 @@ export default class StationDetails extends Component {
     const { address, latitude, longitude, imgUrl } = this.props;
 
     return (
-      <Wrapper>
+      <Fragment>
         <HeaderImage source={{ uri: imgUrl }} resizeMode="cover" />
         <Content>
           <Text>{address}</Text>
           <Text>{latitude}</Text>
           <Text>{longitude}</Text>
         </Content>
-      </Wrapper>
+      </Fragment>
     );
   }
 }
-
-const Wrapper = styled.View`
-  height: ${wHeight - 100}px;
-  background-color: #fff;
-  border-top-right-radius: 8;
-  border-top-left-radius: 8;
-`;
 
 const HeaderImage = styled.Image`
   height: 200px;

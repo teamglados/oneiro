@@ -1,12 +1,13 @@
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, put, select } from 'redux-saga/effects';
 import { createDuck, createApiAction } from 'reducktion';
 import { Image } from 'react-native';
 
 import mockStations from './mock-stations.json';
-import { sleep } from '../../helpers/utils';
+import navigation from '../../navigation/navigation.service';
 
 const model = createDuck({
   name: 'station',
+  inject: ['charging'],
   state: {
     nearbyStations: [],
     selectedStation: null,
@@ -20,22 +21,27 @@ const model = createDuck({
       ...state,
       selectedStation: action.payload,
     }),
+    clearSelectedStation: state => ({
+      ...state,
+      selectedStation: null,
+    }),
+    reserveSelectedStation: state => ({ ...state }),
   }),
   selectors: ({ name }) => ({
-    getStationDetails: state => {
+    getSelectedStationDetails: state => {
       const { nearbyStations, selectedStation } = state[name];
       return nearbyStations.find(x => x.id === selectedStation);
     },
   }),
-  sagas: ({ types }) => [
+  sagas: ({ types, deps }) => [
     takeEvery(types.fetchNearbyStations.loading, fetchNearbyStationsSaga),
+    takeEvery(types.reserveSelectedStation, reserveSelectedStationSaga, deps),
   ],
 });
 
 // Saga handlers
 function* fetchNearbyStationsSaga() {
   try {
-    console.log('> foo');
     yield put(model.actions.fetchNearbyStations.success(mockStations));
 
     const preFetchImages = mockStations.map(({ imgUrl }) =>
@@ -45,6 +51,29 @@ function* fetchNearbyStationsSaga() {
     Promise.all(preFetchImages);
   } catch (error) {
     yield put(model.actions.fetchNearbyStations.fail());
+  }
+}
+
+function* reserveSelectedStationSaga(deps) {
+  try {
+    const selectedStation = yield select(model.selectors.getSelectedStation);
+    console.log('Selected station', selectedStation);
+
+    // TODO: do the reservation!
+
+    // Update status
+    yield put(deps.charging.actions.setChargingStatus('RESERVED'));
+
+    // Go to Charging tab
+    navigation.navigate('ChargingStack');
+
+    // Start polling for reservation status
+    yield put(deps.charging.actions.startReservationPolling());
+
+    // Cleanup
+    yield put(model.actions.clearSelectedStation());
+  } catch (error) {
+    console.log('Failed to reserve station', error);
   }
 }
 

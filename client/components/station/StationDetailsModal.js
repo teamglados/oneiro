@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 /* eslint-disable import/no-extraneous-dependencies */
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
@@ -12,6 +13,9 @@ import stationModel from './station.model';
 import LAYOUT from '../../constants/layout';
 import { runSpring } from '../../helpers/utils';
 import StationDetails from './StationDetails';
+import Flexer from '../common/Flexer';
+import Text from '../common/Text';
+import Button from '../common/Button';
 
 const {
   Value,
@@ -31,6 +35,9 @@ const { wHeight, wWidth } = LAYOUT;
 class StationDetailsModal extends React.PureComponent {
   static propTypes = {
     stationDetails: PropTypes.object.isRequired,
+    selectedStation: PropTypes.number.isRequired,
+    selectStation: PropTypes.func.isRequired,
+    reserveSelectedStation: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -123,13 +130,35 @@ class StationDetailsModal extends React.PureComponent {
           onGestureEvent={onGestureEvent}
         >
           <Animated.View style={[styles.modal, modalStyle]}>
-            <StationDetails {...stationDetails} />
+            <StationDetailsContent>
+              <StationDetails {...stationDetails} />
+              <Flexer />
+              <ReserveControls>
+                <Button onPress={() => this.props.reserveSelectedStation()}>
+                  <Text color="#fff" bold>
+                    RESERVE
+                  </Text>
+                </Button>
+              </ReserveControls>
+            </StationDetailsContent>
           </Animated.View>
         </PanGestureHandler>
       </React.Fragment>
     );
   }
 }
+
+const StationDetailsContent = styled.View`
+  height: ${wHeight - 100}px;
+  background-color: #fff;
+  border-top-right-radius: 8;
+  border-top-left-radius: 8;
+`;
+
+const ReserveControls = styled.View`
+  margin-bottom: 80px;
+  padding-horizontal: 16px;
+`;
 
 const styles = StyleSheet.create({
   modal: {
@@ -149,11 +178,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  stationDetails: stationModel.selectors.getStationDetails(state),
+  stationDetails: stationModel.selectors.getSelectedStationDetails(state),
+  selectedStation: stationModel.selectors.getSelectedStation(state),
 });
 
 const mapDispatchToProps = {
   selectStation: stationModel.actions.selectStation,
+  reserveSelectedStation: stationModel.actions.reserveSelectedStation,
 };
 
 export default connect(

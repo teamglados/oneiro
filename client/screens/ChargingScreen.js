@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ChargingPending from '../components/charging/ChargingPending';
+import ChargingStatus from '../components/charging/ChargingStatus';
 
 export default class ChargingScreen extends React.Component {
   static navigationOptions = {
@@ -11,7 +11,7 @@ export default class ChargingScreen extends React.Component {
   render() {
     return (
       <Wrapper>
-        <ChargingPending />
+        <ChargingStatus />
       </Wrapper>
     );
   }
