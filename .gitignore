@@ -3,7 +3,7 @@ __pycache__
 *.pyc
 
 # No data files
-data/*
+heatmap/data/*
 
 # DS_Store
 .DS_Store
