@@ -9,3 +9,15 @@ resource "aws_route53_record" "ServerLB" {
     evaluate_target_health = false
   }
 }
+
+# Heatmap CDN
+resource "aws_route53_record" "HeatmapCDN" {
+  zone_id = "${var.ZoneID-teamglados-com}"
+  name = "heatmap.teamglados.com"
+  type = "A"
+  alias {
+    name = "${aws_cloudfront_distribution.Heatmap.domain_name}"
+    zone_id = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
