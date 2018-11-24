@@ -1,10 +1,13 @@
 from sanic import Sanic
 from sanic.response import json
+import os
 
 from enstoflow import Enstoflow
 from api import Api
 from licence_plate import recognize
 from utils import write_picture_to_file
+
+IMAGE_PATH = os.getenv('IMAGE_PATH', '/tmp/plate_image.jpg')
 
 ensto = Enstoflow()
 api = Api(ensto)
@@ -49,10 +52,9 @@ async def charging_stop_route(request, spotId):
 
 @server.route('/postimage', methods=['POST'])
 async def image_route(request):
-    img_path = '/tmp/plate_image.jpg'
-    write_picture_to_file(request.json["media"], img_path)
-    output = recognize(img_path)
-    # Save output to db
+    write_picture_to_file(request.json["media"], IMAGE_PATH)
+    output = recognize(IMAGE_PATH)
+    print(output)
     return json({ 'ok': True })
 
 @server.route('/detect/<spotId>/<license>', methods=['POST'])

@@ -1,9 +1,9 @@
- from openalpr import Alpr
+from openalpr import Alpr
 
- alpr = Alpr("eu", "/etc/openalpr/openalpr.conf", "/usr/share/openalpr/runtime_data")
- alpr.set_top_n(5)
+alpr = Alpr("eu", "/etc/openalpr/openalpr.conf", "/usr/share/openalpr/runtime_data")
+alpr.set_top_n(5)
 
- def recognize(file_path):
+def recognize(file_path):
     cv_output = []
 
     output = alpr.recognize_file(file_path)
@@ -13,6 +13,6 @@
                 "plate": candidate['plate'],
                 "confidence": candidate['confidence']
             })
-    alpr.unload()
 
+    alpr.unload()
     return cv_output
