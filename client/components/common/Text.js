@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Text = styled.Text`
   font-family: System;
@@ -7,19 +7,16 @@ const Text = styled.Text`
   text-decoration-line: ${props => (props.underline ? 'underline' : 'none')};
   color: ${props => props.color || props.theme.textDark};
   background-color: transparent;
+  line-height: ${props => (props.size || 16) * 1.3};
+  ${props =>
+    props.center &&
+    css`
+      text-align: center;
+    `}
 `;
 
 Text.defaultProps = {
   allowFontScaling: false,
 };
-
-export const getTextStyles = (props = {}) => ({
-  fontFamily: 'System',
-  fontSize: props.size || 16,
-  fontWeight: props.bold ? '800' : '400',
-  textDecorationLine: props.underline ? 'underline' : 'none',
-  color: props.color || '#222',
-  backgroundColor: 'transparent',
-});
 
 export default Text;

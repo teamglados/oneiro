@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "address": "Maarintie 10",
+    "latitude": 60.18720989936298,
+    "longitude": 24.817033130675554,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 2,
+    "address": "Puumiehenkuja 3",
+    "latitude": 60.187451763409015,
+    "longitude": 24.82468312606216,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 3,
+    "address": "Metallimiehenkuja 6",
+    "latitude": 60.182963069832596,
+    "longitude": 24.82882487587631,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 4,
+    "address": "Retuperä 2",
+    "latitude": 60.18432968836841,
+    "longitude": 24.836104307323698,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 5,
+    "address": "Otaranta 10",
+    "latitude": 60.18548421186082,
+    "longitude":24.836805453523997,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 6,
+    "address": "Pihkapolku 14",
+    "latitude": 60.18101490139514,
+    "longitude": 24.81591837946326,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 7,
+    "address": "Opintie 1",
+    "latitude": 60.179990412471156,
+    "longitude": 24.801801368594173,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 8,
+    "address": "Kauppamiehentie 23",
+    "latitude": 60.176951039969246,
+    "longitude": 24.80203933082521,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 9,
+    "address": "Nyyrikintie 24",
+    "latitude": 60.18312027699465,
+    "longitude": 24.80165217071772,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  },
+  {
+    "id": 10,
+    "address": "Ukonrivaaja 4",
+    "latitude": 60.1848366503067,
+    "longitude": 24.794736554467818,
+    "imgUrl": "https://source.unsplash.com/random/500x200"
+  }
+]

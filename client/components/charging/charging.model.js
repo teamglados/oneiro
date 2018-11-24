@@ -3,17 +3,16 @@ import { createDuck, createApiAction } from 'reducktion';
 
 import { sleep } from '../../helpers/utils';
 
-const duck = createDuck({
-  name: 'order',
+const model = createDuck({
+  name: 'charging',
   state: {
-    orders: [],
-    packages: [],
+    chargePercentage: null,
+    chargeStatus: 'NON_ACTIVE',
     error: undefined,
     hasError: false,
     isLoading: false,
   },
   actions: () => ({
-    // Simple way to create API related action
     fetchOrders: createApiAction('orders'),
     // Provide custom success reducer handler
     fetchPackages: createApiAction({
@@ -39,16 +38,16 @@ function* fetchOrdersSaga() {
     yield sleep(400);
     // this.props.fetchOrders()
     yield put(
-      duck.actions.fetchOrders.success([
-        { id: 1, name: 'Mock order 1' },
-        { id: 2, name: 'Mock order 2' },
-        { id: 3, name: 'Mock order 3' },
-        { id: 4, name: 'Mock order 4' },
+      model.actions.fetchOrders.success([
+        { id: 1, name: 'Mock charging 1' },
+        { id: 2, name: 'Mock charging 2' },
+        { id: 3, name: 'Mock charging 3' },
+        { id: 4, name: 'Mock charging 4' },
       ])
     );
   } catch (error) {
-    yield put(duck.actions.fetchOrders.fail());
+    yield put(model.actions.fetchOrders.fail());
   }
 }
 
-export default duck;
+export default model;

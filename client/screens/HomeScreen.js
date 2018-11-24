@@ -1,15 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { Location, Permissions, MapView } from 'expo';
+import { connect } from 'react-redux';
 
-// import Text from '../components/common/Text';
+import NearbyStations from '../components/station/NearbyStations';
+import StationDetailsModal from '../components/station/StationDetailsModal';
+import stationModel from '../components/station/station.model';
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
+  static propTypes = {
+    selectedStation: PropTypes.number,
+  };
+
   static navigationOptions = {
     header: null,
   };
 
-  mapRef = React.createRef();
+  mapRef = React.createRef(); // eslint-disable-line
 
   state = {
     location: null,
@@ -32,14 +40,15 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const { location } = this.state;
+    const { selectedStation } = this.props;
 
     if (!location) return null;
 
     const initialRegion = {
       latitude: location.latitude,
       longitude: location.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.03,
+      longitudeDelta: 0.03,
     };
 
     return (
@@ -52,7 +61,11 @@ export default class HomeScreen extends React.Component {
           style={{ flex: 1 }}
           showsUserLocation
           showsMyLocationButton
-        />
+        >
+          <NearbyStations />
+        </MapView>
+
+        {selectedStation && <StationDetailsModal />}
       </Wrapper>
     );
   }
@@ -62,3 +75,9 @@ const Wrapper = styled.View`
   flex: 1;
   background-color: #fff;
 `;
+
+const mapStateToProps = state => ({
+  selectedStation: stationModel.selectors.getSelectedStation(state),
+});
+
+export default connect(mapStateToProps)(HomeScreen);
