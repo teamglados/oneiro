@@ -1,3 +1,4 @@
+# Python shit
 __pycache__
 *.pyc
 
@@ -9,3 +10,7 @@ data/*
 
 # VS code shit
 .vscode/*
+
+# Terraform
+.terraform
+
