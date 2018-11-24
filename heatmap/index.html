@@ -13,7 +13,6 @@
 </head>
 <body>
 
-
 <div id='map'></div>
 
 <script>
@@ -21,37 +20,62 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidGVlbXV0YXNrdWxhIiwiYSI6ImNqYWYwano1MjB6eTYyd
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/dark-v9',
-    center: [24.945831, 60.192059],
-    zoom: 7
+    center: [24.945831, 60.212059],
+    zoom: 10
 });
 
 map.on('load', function() {
     map.addSource('activity-data', {
         "type": "geojson",
-        "data": "http://localhost:8000/data/activity_data/Uusimaa_activity_data_hourly_20_min_break_MTC_201801.geojson"
+        "data": "https://heatmap.teamglados.com/data/activity_data/Uusimaa_activity_data_hourly_20_min_break_MTC_201801.geojson"
     });
 
     map.addSource('charger_stations', {
         "type": "geojson",
-        "data": "http://localhost:8000/data/charger_location_data.geojson",
+        "data": "https://heatmap.teamglados.com/data/charger_location_data.geojson",
         cluster: true,
-        clusterMaxZoom: 50,
-        clusterRadius: 0.5
+        clusterMaxZoom: 14,
+        clusterRadius: 50
     });
 
-    map.loadImage('http://localhost:8000/data/plug.png', function(error, image) {
-            if (error) throw error;
-            map.addImage('plug_icon', image);
-            map.addLayer({
-                "id": "points",
-                "type": "symbol",
-                "source": "charger_stations",
-                "layout": {
-                    "icon-image": "plug_icon",
-                    "icon-size": 0.035
-                }
-            });
-        });
+    map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "charger_stations",
+        filter: ["has", "point_count"],
+        paint: {
+            "circle-color": "#38cc20",
+            "circle-radius": 15
+        }
+    });
+
+    map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "charger_stations",
+        filter: ["has", "point_count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        },
+        paint: {
+            "text-color": "#ffffff"
+        }
+    });
+
+    map.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "charger_stations",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+            "circle-color": "#38cc20",
+            "circle-radius": 4,
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#fff"
+        }
+    });
 
     map.addLayer({
         "id": "activity-heat",
@@ -76,22 +100,27 @@ map.on('load', function() {
                 0.8, "rgb(239,138,98)",
                 1, "rgb(178,24,43)"
             ],
-            "heatmap-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                0, 2,
-                15, 20
-            ],
             "heatmap-opacity": [
                 "interpolate",
                 ["linear"],
                 ["zoom"],
                 7, 1,
-                100, 0
+                100, 0.5
             ],
         }
     }, 'waterway-label');
+
+    map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "charger_stations",
+        filter: ["has", "count"],
+        layout: {
+            "text-field": "{point_count_abbreviated}",
+            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+            "text-size": 12
+        }
+    });
 
 });
 </script>
