@@ -12,7 +12,7 @@ async def main_handler(request):
 
 @server.route('/test', methods=['GET'])
 async def test_handler(request):
-    return e.listChargingPointGroups()
+    return json(e.listChargingPointGroups())
 
 if __name__ == '__main__':
     server.run(host='0.0.0.0', port=8000)
