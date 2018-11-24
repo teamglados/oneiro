@@ -12,6 +12,7 @@ data/*
 .vscode/*
 
 # Terraform
-.terraform
-.tfstate
-.tfstate*
+cloud/.terraform
+cloud/.tfstate
+cloud/*.tfstate*
+cloud/vars.tf
