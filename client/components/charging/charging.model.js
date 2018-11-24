@@ -9,6 +9,7 @@ import {
   cancel,
   cancelled,
   call,
+  select,
 } from 'redux-saga/effects';
 
 import { sleep } from '../../helpers/utils';
@@ -73,7 +74,14 @@ function* stopChargingSaga(deps) {
     console.log('> stopChargingSaga');
     yield put(model.actions.stopChargingPolling());
 
-    const receipt = yield call(api.stopCharging);
+    const stationDetails = yield select(
+      deps.station.selectors.getReservedStationDetails
+    );
+
+    // NOTE: add address to receipt
+    const _receipt = yield call(api.stopCharging);
+    const receipt = { ..._receipt, address: stationDetails.address };
+
     console.log('> Show receipt modal');
     yield put(deps.payment.actions.showPaymentReceiptModal(receipt));
 
@@ -100,7 +108,7 @@ function* reservationTimerSaga() {
   try {
     while (true) {
       yield put(model.actions.incReservationTimer());
-      yield call(sleep, 1000); // update every minute?
+      yield call(sleep, 1000);
     }
   } finally {
     if (yield cancelled()) console.log('> Reservation timer cancelled');
@@ -110,29 +118,41 @@ function* reservationTimerSaga() {
 
 function* reservationPollingSaga() {
   yield call(sleep, 2000);
+
+  let authOk = false;
+  let statusOk = false;
+
   try {
     while (true) {
       console.log('> Polling reservation status...');
-      let reservation;
-      let apiRequestOk = true;
 
-      // Make sure poller does not die if API request fails
-      try {
-        reservation = yield call(api.fetchReservation);
-      } catch (error) {
-        console.log('> Reservation polling API request failed');
-        apiRequestOk = false;
+      // First check if the car license plate has been authenticated
+      if (!authOk) {
+        try {
+          const { auth } = yield call(api.fetchReservationAuth);
+          authOk = auth;
+          if (!authOk) console.log('> License plate not authenticated yet!');
+        } catch (error) {
+          console.log('> Reservation polling API request failed');
+        }
       }
 
-      if (apiRequestOk && reservation) {
-        const { status } = reservation;
-
-        if (status === 'PENDING') {
-          yield put(model.actions.setChargingStatus('PENDING'));
-          yield put(model.actions.stopReservationPolling());
-        } else if (status === 'EXPIRED') {
-          // TODO: handle
+      // Then if auth is ok -> check charging station status
+      if (authOk) {
+        try {
+          const { connectors } = yield call(api.fetchReservationStatus);
+          const lastIndex = connectors.length - 1;
+          const okStatuses = ['Available', 'Pending'];
+          statusOk = okStatuses.includes(connectors[lastIndex].status);
+          if (!statusOk) console.log('> License plate not authentica');
+        } catch (error) {
+          console.log('> Reservation polling API request failed');
         }
+      }
+
+      if (authOk && statusOk) {
+        yield put(model.actions.setChargingStatus('PENDING'));
+        yield put(model.actions.stopReservationPolling());
       }
 
       yield call(sleep, 1000); // 1 sec polling interval

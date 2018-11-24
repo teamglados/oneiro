@@ -1,6 +1,7 @@
 import axios from 'axios';
-// import { addHours } from 'date-fns';
+import { addHours } from 'date-fns';
 
+import mockStations from '../mock-stations.json';
 import config from '../config';
 
 const httpClient = axios.create({
@@ -19,7 +20,9 @@ export const connectApiToStore = store => {
 // Interceptors ==============================================================
 api.http.interceptors.response.use(
   response => {
-    if (__DEV__) console.log('> API response', response);
+    if (__DEV__) {
+      // console.log('> API response', response);
+    }
     return response.data;
   },
   error => {
@@ -39,76 +42,52 @@ api.http.interceptors.response.use(
   }
 );
 
-// Add jwt token to requests
-api.http.interceptors.request.use(
-  async requestConfig => {
-    // const credentials = await getPersistedCredentials();
-
-    const reqConfig = {
-      ...requestConfig,
-      headers: {
-        ...requestConfig.headers,
-        // Authorization: `Bearer ${credentials.accessToken}`,
-      },
-    };
-
-    if (__DEV__) console.log('> API request', reqConfig);
-
-    return reqConfig;
-  },
-  error => {
-    if (__DEV__) console.log('> API request error', error);
-    return Promise.reject(error);
-  }
-);
-
 // Exported API methods
 
 // Trip ///////////////////////////////////////////////////////////////////////
-export async function fetchNearbyStations({ latitude, longitude }) {
-  return api.http.get(
-    `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
-  );
+export async function fetchNearbyStations() {
+  const stations = mockStations.map(s => ({
+    ...s,
+    endingTime: addHours(new Date(), 5),
+  }));
+  return stations;
 }
 
-let inc = 0;
-export async function fetchReservation() {
-  inc += 1;
-
-  const base = {
-    id: 1,
-    // endingTime: addHours(new Date(), 5),
-  };
-
-  return inc > 4
-    ? { ...base, status: 'PENDING' }
-    : { ...base, status: 'PLANNING' };
-  // return api.http.get(
-  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
-  // );
+export async function fetchReservationAuth() {
+  const res = await api.http.get('/spot/status/auth/1');
+  console.log('> API fetchReservationAuth', res);
+  return res;
 }
 
-let percentage = 20;
+export async function fetchReservationStatus() {
+  const res = await api.http.get('/spot/status/1');
+  console.log('> API fetchReservationStatus', res);
+  return res;
+}
+
+let percentage = 23;
 export async function fetchCharging() {
   percentage += 1;
   return percentage >= 100
     ? { id: 1, percentage: 100, status: 'COMPLETE' }
     : { id: 1, percentage: Math.min(percentage, 100), status: 'CHARGING' };
-  // return api.http.get(
-  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
-  // );
+}
+
+export async function startCharging() {
+  const res = await api.http.post('/spot/start/1');
+  console.log('> API startCharging', res);
+  return res;
 }
 
 export async function stopCharging() {
+  const res = await api.http.post('/spot/stop/1');
+  console.log('> API stopCharging', res);
+
   return {
     timestamp: Date.now(),
-    address: 'Puumiehenkuja 3',
-    chargingCost: 2045, // cents
-    parkingCost: 2045, // cents
-    totalCost: 2045, // cents
-    chargeTime: 1200000, // ms -> 20 mins
+    chargingCost: res.charging_cost,
+    parkingCost: res.parking_cost,
+    totalCost: res.total_cost,
+    duration: res.duration,
   };
-  // return api.http.post(
-  //   `/nearby_stations?latitude=${latitude}&longitude=${longitude}`
-  // );
 }

@@ -22,7 +22,7 @@ class ReceiptModal extends Component {
       totalCost: PropTypes.number.isRequired,
       parkingCost: PropTypes.number.isRequired,
       chargingCost: PropTypes.number.isRequired,
-      chargeTime: PropTypes.number.isRequired,
+      duration: PropTypes.number.isRequired,
     }),
     receiptModalVisible: PropTypes.bool.isRequired,
     closePaymentReceiptModal: PropTypes.func.isRequired,

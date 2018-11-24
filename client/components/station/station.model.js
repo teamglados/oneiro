@@ -1,10 +1,9 @@
-import { takeEvery, put, select } from 'redux-saga/effects';
+import { takeEvery, put, select, call } from 'redux-saga/effects';
 import { createDuck, createApiAction } from 'reducktion';
 import { Image } from 'react-native';
-import { addHours } from 'date-fns';
 
-import mockStations from './mock-stations.json';
 import navigation from '../../navigation/navigation.service';
+import * as api from '../../helpers/api';
 
 const model = createDuck({
   name: 'station',
@@ -51,16 +50,11 @@ const model = createDuck({
 // Saga handlers
 function* fetchNearbyStationsSaga() {
   try {
-    const stations = mockStations.map(s => ({
-      ...s,
-      endingTime: addHours(new Date(), 5),
-    }));
+    const stations = yield call(api.fetchNearbyStations);
+
     yield put(model.actions.fetchNearbyStations.success(stations));
 
-    const preFetchImages = mockStations.map(({ imgUrl }) =>
-      Image.prefetch(imgUrl)
-    );
-
+    const preFetchImages = stations.map(({ imgUrl }) => Image.prefetch(imgUrl));
     Promise.all(preFetchImages);
   } catch (error) {
     yield put(model.actions.fetchNearbyStations.fail());
