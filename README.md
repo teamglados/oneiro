@@ -48,6 +48,8 @@ docker run -p 8000:8000 -e LIVE_MODE=true -v /tmp:/tmp --name glados glados:late
 
 - If not is basic auth expired?
 
+- Is rate limit in place?
+
 - Is deployed with LIVE_MODE=true or not?
 
 - Is rpi connected? Do you see /postimage log?
