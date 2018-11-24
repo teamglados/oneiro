@@ -4,7 +4,7 @@ import requests
 from picamera import PiCamera
 
 camera = PiCamera()
-camera.resolution = (1024, 768)
+camera.resolution = (320, 240)
 camera.start_preview()
 
 url = os.getenv("API_URL", "https://api.teamglados.com/postimage")
