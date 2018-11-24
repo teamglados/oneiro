@@ -18,7 +18,7 @@ print('Running in live={}'.format(LIVE_MODE))
 
 @server.route('/', methods=['GET'])
 async def status_route(request):
-    return json({'ok': True})
+    return json({'ok': True, 'live_mode': LIVE_MODE })
 
 @server.route('/history/<userId>', methods=['GET'])
 async def history_route(request, userId):
