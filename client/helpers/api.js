@@ -88,7 +88,7 @@ export async function fetchReservation() {
   // );
 }
 
-let percentage = 0;
+let percentage = 20;
 export async function fetchCharging() {
   percentage += 1;
   return percentage >= 100

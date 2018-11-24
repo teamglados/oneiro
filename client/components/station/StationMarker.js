@@ -18,7 +18,7 @@ class StationMarker extends Component {
       <MapView.Marker coordinate={coordinate} onPress={this.props.handlePress}>
         <CustomMarker>
           <MarkerImage
-            source={require('../../assets/images/plug_white.png')}
+            source={require('../../assets/images/flash.png')}
             resizeMode="cover"
           />
         </CustomMarker>
@@ -31,14 +31,15 @@ const CustomMarker = styled.View`
   width: 32px;
   height: 32px;
   border-radius: 32px;
-  background-color: ${props => props.theme.primaryColor};
+  border: 1px solid ${props => props.theme.primaryColorLightest};
+  background-color: ${props => props.theme.primaryColorDarker};
   justify-content: center;
   align-items: center;
 `;
 
 const MarkerImage = styled.Image`
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 `;
 
 export default StationMarker;
