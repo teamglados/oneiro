@@ -16,7 +16,10 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGf643ebrWpPxssQqKPXU0VqfLFUu2i9FADT
 # deployer-key
 
 # Install packages
-apt install docker-ce htop -y
+apt install docker-ce htop python3 python3-pip wget curl -y
+
+# Install awscli
+pip3 install awscli --upgrade
 
 # Add "ubuntu" user to docker group
 usermod -aG docker ubuntu
