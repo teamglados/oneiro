@@ -55,6 +55,7 @@ class Api:
         for item in detector_output:
             if item['confidence'] >= 75:
                 self.auth = True
+                print('Found license plate - auth OK')
                 return self.spot_enable()
         self.auth = False
         return { 'ok': False }
