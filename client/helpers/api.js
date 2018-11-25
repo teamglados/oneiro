@@ -53,7 +53,6 @@ export async function fetchHistory() {
   const h = res.history[res.history.length - 1];
   return h
     ? [
-        ...mockHistory,
         {
           id: 4,
           date: subHours(new Date(), 1).toISOString(),
@@ -63,6 +62,7 @@ export async function fetchHistory() {
           chargingCost: h.charging_cost,
           parkingCost: h.parking_cost,
         },
+        ...mockHistory,
       ]
     : mockHistory;
 }

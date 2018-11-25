@@ -47,7 +47,7 @@ class HistoryList extends Component {
             <HistoryItem key={item.id}>
               <Flexer>
                 <Text size={14} color={theme.greyDarkest}>
-                  {format(item.date, 'DD.MM.YYYY')}
+                  {format(item.date, 'HH.mm - DD.MM.YYYY')}
                 </Text>
                 <Gutter vertical amount={8} />
                 <Row>
@@ -57,7 +57,7 @@ class HistoryList extends Component {
                     color={theme.greyDarkest}
                   />
                   <Gutter amount={4} />
-                  <Text size={18}>{item.duration} min</Text>
+                  <Text size={18}>{Math.floor(item.duration)} min</Text>
                 </Row>
               </Flexer>
 
