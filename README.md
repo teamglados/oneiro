@@ -8,7 +8,7 @@ We have created an application that connects EV chargers and EV owners who need 
 
 To see how Oneiro connects EV owners to charger hosts (like Airbnb!), take a look at our demo video (url). Convenient, affordable, win-win-win for everyone.
 
-Tech used: React Native, OpenCV, Python, Docker, AWS, Terraform, Raspberry Pi + Camera, Ensto's Chago
-Data used: Telia's activity data on date 11.1.2018 2pm - 4 pm
+**Tech used:** React Native, OpenCV, Python, Docker, AWS, Terraform, Raspberry Pi + Camera, Ensto's Chago  
+**Data used:** Telia's activity data on date 11.1.2018 2pm - 4pm  
 
 ![Banner](https://raw.githubusercontent.com/teamglados/oneiro/master/banner.png)
