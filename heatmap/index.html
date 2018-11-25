@@ -2,18 +2,62 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title>Create a heatmap layer</title>
+    <title>Oneiro Heatmap</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        .legend {
+            background-color: #222;
+            border-radius: 3px;
+            bottom: 30px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            padding: 10px;
+            position: absolute;
+            right: 10px;
+            z-index: 1;
+            color: #fff
+        }
+
+        .legend h4 {
+            margin: 0 0 2px;
+        }
+        .legend h5 {
+            margin: 0 0 10px;
+        }
+
+        .legend div span {
+            border-radius: 50%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 5px;
+            width: 10px;
+        }
+
+        .legend .break {
+            height: 10px
+        }
     </style>
 </head>
 <body>
 
-<div id='map'></div>
+<div id='state-legend' class='legend'>
+    <h4>Activity</h4>
+    <h5>Number of people in that area</h5>
+    <div><span style='background-color: rgb(178,24,43)'></span>10000</div>
+    <div><span style='background-color: rgb(239,138,98)'></span>8000</div>
+    <div><span style='background-color: rgb(253,219,199)'></span>6000</div>
+    <div><span style='background-color: rgb(209,229,240)'></span>4000</div>
+    <div><span style='background-color: rgb(103,169,207)'></span>2000</div>
+    <h4 style='margin-top: 8px'>Charger</h4>
+    <div><span style='background-color: #38cc20'></span>Existing charger(s)</div>
+</div>
+
+
+<div id='map' class='dark'></div>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoidGVlbXV0YXNrdWxhIiwiYSI6ImNqYWYwano1MjB6eTYyd3F1OGNjMWczMGcifQ.KVj38ECZkRdLx06fMyBMRQ';
@@ -110,18 +154,7 @@ map.on('load', function() {
         }
     }, 'waterway-label');
 
-    map.addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "charger_stations",
-        filter: ["has", "count"],
-        layout: {
-            "text-field": "{point_count_abbreviated}",
-            "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-            "text-size": 12
-        }
-    });
-
+    var stateLegendEl = document.getElementById('state-legend');
 });
 </script>
 
