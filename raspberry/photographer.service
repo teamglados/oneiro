@@ -3,7 +3,8 @@ Description=Photographer Service
 After=network.target
 
 [Service]
-ExecStart=API_URL=https://api.teamglados.com/postimage /usr/bin/python3 photographer.py
+Environment="API_URL=https://api.teamglados.com/postimage"
+ExecStart=/usr/bin/python photographer.py
 WorkingDirectory=/home/pi
 StandardOutput=inherit
 StandardError=inherit
