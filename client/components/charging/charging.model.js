@@ -169,34 +169,28 @@ function* reservationPollingSaga() {
   }
 }
 
+let percentage = 23;
+
 function* chargingPollingSaga() {
+  percentage = 23;
+
+  // Small delay for fade animation
   yield call(sleep, 2000);
+
   try {
     while (true) {
       console.log('> Polling charging status...');
-      let chargingData;
-      let apiRequestOk = true;
 
-      // Make sure poller does not die if API request fails
-      try {
-        chargingData = yield call(api.fetchCharging);
-      } catch (error) {
-        console.log('> Charging polling API request failed');
-        apiRequestOk = false;
+      if (percentage >= 100) {
+        yield put(model.actions.updateChargingPercentage(100));
+        yield put(model.actions.stopChargingPolling());
+      } else {
+        yield put(model.actions.updateChargingPercentage(percentage));
       }
 
-      if (apiRequestOk && chargingData) {
-        const { status, percentage } = chargingData;
+      percentage += 1;
 
-        if (status === 'COMPLETE') {
-          yield put(model.actions.updateChargingPercentage(100));
-          yield put(model.actions.stopChargingPolling());
-        } else {
-          yield put(model.actions.updateChargingPercentage(percentage));
-        }
-      }
-
-      yield call(sleep, 1000); // 1 sec polling interval
+      yield call(sleep, 1000); // 1 sec update interval
     }
   } finally {
     if (yield cancelled()) console.log('> Charging polling cancelled');

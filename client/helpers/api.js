@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { addHours } from 'date-fns';
+import { addHours, subHours } from 'date-fns';
 
 import mockStations from '../mock-stations.json';
+import mockHistory from '../mock-history.json';
 import config from '../config';
 
 const httpClient = axios.create({
@@ -45,6 +46,28 @@ api.http.interceptors.response.use(
 // Exported API methods
 
 // Trip ///////////////////////////////////////////////////////////////////////
+/* eslint-disable */
+export async function fetchHistory() {
+  const res = await api.http.get('/history/1');
+  console.log('> API fetchHistory', res);
+  const h = res.history[res.history.length - 1];
+  return h
+    ? [
+        ...mockHistory,
+        {
+          id: 4,
+          date: subHours(new Date(), 1).toISOString(),
+          duration: h.duration,
+          ownersCut: h.owners_cut,
+          totalCost: h.total_cost,
+          chargingCost: h.charging_cost,
+          parkingCost: h.parking_cost,
+        },
+      ]
+    : mockHistory;
+}
+/* eslint-enable */
+
 export async function fetchNearbyStations() {
   const stations = mockStations.map(s => ({
     ...s,
