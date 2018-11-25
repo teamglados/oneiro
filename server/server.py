@@ -22,7 +22,7 @@ async def status_route(request):
 
 @server.route('/history/<userId>', methods=['GET'])
 async def history_route(request, userId):
-    return json(api.history)
+    return json(api.get_history(userId))
 
 @server.route('/spot/status/<spotId>', methods=['GET'])
 async def spot_status_route(request, spotId):
