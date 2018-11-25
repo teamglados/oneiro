@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Icon } from 'expo';
 
 import theme from '../../constants/theme';
-import Text from './Text';
 
 const noop = () => {};
 
@@ -48,11 +47,7 @@ const Button = props => {
       >
         {icon ? <Space lg={lg} /> : null}
 
-        <TextContent>
-          <Text size={lg ? 32 : 18} color={getColor(props)} bold={!!outline}>
-            {children}
-          </Text>
-        </TextContent>
+        <TextContent>{children}</TextContent>
 
         {icon ? (
           <Icon.Feather
@@ -90,6 +85,7 @@ const ButtonBase = styled.TouchableOpacity`
 
 const TextContent = styled.View`
   flex: 1;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
 `;

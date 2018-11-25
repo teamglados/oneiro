@@ -70,7 +70,7 @@ class ReceiptModal extends Component {
                   <Gutter />
                   <Text>Charging cost</Text>
                   <Flexer />
-                  <Text>{receipt.chargingCost}€</Text>
+                  <Text>{Number(receipt.chargingCost).toFixed(2)}€</Text>
                 </Row>
 
                 <Gutter vertical />
@@ -84,7 +84,7 @@ class ReceiptModal extends Component {
                   <Gutter />
                   <Text>Parking cost</Text>
                   <Flexer />
-                  <Text>{receipt.parkingCost}€</Text>
+                  <Text>{Number(receipt.parkingCost).toFixed(2)}€</Text>
                 </Row>
 
                 <Divider />
@@ -98,7 +98,7 @@ class ReceiptModal extends Component {
                   <Gutter />
                   <Text>Total amount paid</Text>
                   <Flexer />
-                  <Text bold>{receipt.totalCost}€</Text>
+                  <Text bold>{Number(receipt.totalCost).toFixed(2)}€</Text>
                 </Row>
               </Summary>
 

@@ -18,7 +18,7 @@ import * as api from '../../helpers/api';
 
 const model = createDuck({
   name: 'charging',
-  inject: ['payment'],
+  inject: ['payment', 'station'],
   state: {
     chargingPercentage: null,
     chargingStatus: 'PLANNING',
@@ -52,6 +52,10 @@ const model = createDuck({
       ...state,
       reservationTimer: addSeconds(state.reservationTimer, 1),
     }),
+    setLoading: (state, action) => ({
+      ...state,
+      isLoading: !!action.payload,
+    }),
 
     // Poller actions
     startReservationPolling: state => ({ ...state }),
@@ -71,6 +75,7 @@ const model = createDuck({
 // Saga handlers
 function* stopChargingSaga(deps) {
   try {
+    yield put(model.actions.setLoading(true));
     console.log('> stopChargingSaga');
     yield put(model.actions.stopChargingPolling());
 
@@ -83,6 +88,7 @@ function* stopChargingSaga(deps) {
     const receipt = { ..._receipt, address: stationDetails.address };
 
     console.log('> Show receipt modal');
+    yield put(model.actions.setLoading(false));
     yield put(deps.payment.actions.showPaymentReceiptModal(receipt));
 
     // Cleanup
@@ -95,9 +101,9 @@ function* stopChargingSaga(deps) {
 
 function* startChargingSaga() {
   try {
-    yield put(model.actions.updateChargingPercentage(0));
-    yield put(model.actions.startChargingPolling());
+    yield put(model.actions.updateChargingPercentage(23));
     yield put(model.actions.setChargingStatus('CHARGING'));
+    yield put(model.actions.startChargingPolling());
   } catch (error) {
     console.log('Could not start charging', error);
   }
