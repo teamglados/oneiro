@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import { initDucks } from 'reducktion';
 
 import station from './components/station/station.model';
@@ -18,8 +18,8 @@ function* rootSaga() {
 }
 
 const sagaMiddleware = createSagaMiddleware();
-const enhancer = applyMiddleware(sagaMiddleware, logger);
-// const enhancer = applyMiddleware(sagaMiddleware);
+// const enhancer = applyMiddleware(sagaMiddleware, logger);
+const enhancer = applyMiddleware(sagaMiddleware);
 
 export default function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, enhancer);
