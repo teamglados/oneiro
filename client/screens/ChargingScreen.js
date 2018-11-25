@@ -28,6 +28,7 @@ class ChargingScreen extends Component {
     stopCharging: PropTypes.func.isRequired,
     startCharging: PropTypes.func.isRequired,
     stationDetails: PropTypes.object,
+    chargingIsLoading: PropTypes.bool.isRequired,
   };
 
   stopCharging = () => {
@@ -53,6 +54,7 @@ class ChargingScreen extends Component {
       reservationTimer,
       reservationExpiry,
       stationDetails,
+      chargingIsLoading,
     } = this.props;
 
     return (
@@ -88,6 +90,7 @@ class ChargingScreen extends Component {
         >
           <ChargingActive
             percentage={chargingPercentage || 0}
+            isLoading={chargingIsLoading}
             stopCharging={this.stopCharging}
           />
         </Fade>
@@ -108,6 +111,7 @@ const mapStateToProps = state => ({
   chargingStatus: chargingModel.selectors.getChargingStatus(state),
   reservationTimer: chargingModel.selectors.getReservationTimer(state),
   reservationExpiry: chargingModel.selectors.getReservationExpiry(state),
+  chargingIsLoading: chargingModel.selectors.getIsLoading(state),
   stationDetails: stationModel.selectors.getReservedStationDetails(state),
 });
 

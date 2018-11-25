@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { ActivityIndicator } from 'react-native';
 
 import Text from '../common/Text';
 import Gutter from '../common/Gutter';
@@ -9,14 +10,15 @@ import Button from '../common/Button';
 import theme from '../../constants/theme';
 import AnimatedCircularProgress from '../common/AnimatedCircularProgress';
 
-export default class ChargingStatus extends Component {
+export default class ChargingActive extends Component {
   static propTypes = {
     percentage: PropTypes.number,
     stopCharging: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { percentage } = this.props;
+    const { percentage, isLoading } = this.props;
 
     return (
       <Wrapper>
@@ -45,10 +47,17 @@ export default class ChargingStatus extends Component {
 
         <Flexer />
 
-        <Button onPress={() => this.props.stopCharging()}>
+        <Button disabled={isLoading} onPress={() => this.props.stopCharging()}>
           <Text color="#fff" bold>
             STOP CHARGING
           </Text>
+
+          {isLoading && (
+            <Fragment>
+              <Gutter />
+              <ActivityIndicator color="#fff" size="small" />
+            </Fragment>
+          )}
         </Button>
       </Wrapper>
     );

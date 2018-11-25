@@ -66,8 +66,6 @@ function* reserveSelectedStationSaga(deps) {
     const selectedStation = yield select(model.selectors.getSelectedStation);
     console.log('Selected station', selectedStation);
 
-    // TODO: do the reservation!
-
     // Update status
     yield put(deps.charging.actions.setChargingStatus('RESERVED'));
     yield put(deps.charging.actions.startReservationTimer());
