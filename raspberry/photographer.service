@@ -1,0 +1,14 @@
+[Unit]
+Description=Photographer Service
+After=network.target
+
+[Service]
+ExecStart=API_URL=https://api.teamglados.com/postimage /usr/bin/python3 photographer.py
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
