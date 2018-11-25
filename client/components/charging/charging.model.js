@@ -101,6 +101,7 @@ function* stopChargingSaga(deps) {
 
 function* startChargingSaga() {
   try {
+    yield call(api.startCharging);
     yield put(model.actions.updateChargingPercentage(23));
     yield put(model.actions.setChargingStatus('CHARGING'));
     yield put(model.actions.startChargingPolling());
