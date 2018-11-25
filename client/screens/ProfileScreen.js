@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import Text from '../components/common/Text';
+
+import HistoryList from '../components/history/HistoryList';
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
@@ -10,7 +11,7 @@ export default class ProfileScreen extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Text>Profile here</Text>
+        <HistoryList />
       </Wrapper>
     );
   }
@@ -19,6 +20,4 @@ export default class ProfileScreen extends React.Component {
 const Wrapper = styled.SafeAreaView`
   flex: 1;
   background-color: #fff;
-  justify-content: center;
-  align-items: center;
 `;

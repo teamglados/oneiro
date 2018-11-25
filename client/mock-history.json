@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "date": "2018-11-25T11:18:10.406Z",
+    "duration": 62,
+    "ownersCut": 0.63,
+    "totalCost": 1.05,
+    "chargingCost": 0.35,
+    "parkingCost": 0.70
+  },
+  {
+    "id": 2,
+    "date": "2018-11-20T12:38:10.406Z",
+    "duration": 80,
+    "ownersCut": 0.81,
+    "totalCost": 1.25,
+    "chargingCost": 0.45,
+    "parkingCost": 0.80
+  },
+  {
+    "id": 3,
+    "date": "2018-11-16T14:48:10.406Z",
+    "duration": 118,
+    "ownersCut": 1.6,
+    "totalCost": 2.20,
+    "chargingCost": 0.75,
+    "parkingCost": 1.45
+  }
+]
