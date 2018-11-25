@@ -10,3 +10,5 @@ To see how Oneiro connects EV owners to charger hosts (like Airbnb!), take a loo
 
 Tech used: React Native, OpenCV, Python, Docker, AWS, Terraform, Raspberry Pi + Camera, Ensto's Chago
 Data used: Telia's activity data on date 11.1.2018 2pm - 4 pm
+
+![Banner](https://raw.githubusercontent.com/teamglados/oneiro/master/banner.png)
