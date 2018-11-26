@@ -6,9 +6,9 @@ Your charger can be utilized when you are not using it. While you’re at work, 
 
 We have created an application that connects EV chargers and EV owners who need their batteries charged. We make owning a charger an opportunity to make money. Renting your station 2-3h per every day could earn you anything between 500€ to 3000€ per year depending on the charger's location.
 
-To see how Oneiro connects EV owners to charger hosts (like Airbnb!), take a look at our demo video (url). Convenient, affordable, win-win-win for everyone.
+To see how Oneiro connects EV owners to charger hosts (like Airbnb!), take a look at our demo video (https://vimeo.com/302650304). Convenient, affordable, win-win-win for everyone.
 
-**Tech used:** React Native, OpenCV, Python, Docker, AWS, Terraform, Raspberry Pi + Camera, Ensto's Chago  
-**Data used:** Telia's activity data on date 11.1.2018 2pm - 4pm  
+**Tech used:** React Native, OpenCV, Python, Docker, AWS, Terraform, Raspberry Pi + Camera, Ensto's Chago
+**Data used:** Telia's activity data on date 11.1.2018 2pm - 4pm
 
 ![Banner](https://raw.githubusercontent.com/teamglados/oneiro/master/banner.png)
